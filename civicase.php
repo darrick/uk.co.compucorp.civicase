@@ -168,7 +168,7 @@ function civicase_civicrm_buildForm($formName, &$form) {
   }
 
   // Display category option for activity types and activity statuses.
-  if ($formName == 'CRM_Admin_Form_Options'
+  if ($formName == CRM_Admin_Form_Options::class
     && in_array($form->getVar('_gName'), [
       'activity_type',
       'activity_status',

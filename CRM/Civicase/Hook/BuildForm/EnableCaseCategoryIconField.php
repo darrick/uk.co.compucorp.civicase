@@ -41,8 +41,13 @@ class CRM_Civicase_Hook_BuildForm_EnableCaseCategoryIconField {
    *   returns TRUE or FALSE.
    */
   private function shouldRun(CRM_Core_Form $form, $formName) {
-    $optionGroupName = $form->getVar('_gName');
-    return $formName == 'CRM_Admin_Form_Options' && $optionGroupName == 'case_type_categories';
+
+    if ($formName == CRM_Admin_Form_Options::class
+      && $form->getVar('_gName') == 'case_type_categories') {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
 }

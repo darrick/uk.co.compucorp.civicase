@@ -43,7 +43,12 @@ class CRM_Civicase_Hook_ValidateForm_SaveCaseTypeCategory {
    *   TRUE if hook should run, FALSE otherwise.
    */
   private function shouldRun(CRM_Core_Form $form, $formName) {
-    return $formName == 'CRM_Admin_Form_Options' && $form->getVar('_gName') == 'case_type_categories';
+    if ($formName == CRM_Admin_Form_Options::class
+      && $form->getVar('_gName') == 'case_type_categories') {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
 }
