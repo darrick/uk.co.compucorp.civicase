@@ -369,7 +369,7 @@ class CRM_Civicase_Helper_CaseCategory {
       ],
       [
         'title' => ts('Case Dashboard'),
-        'url' => CRM_Utils_System::url('civicrm/case/a/', ['case_type_category' => $caseCategoryId], TRUE,
+        'url' => CRM_Utils_System::url('civicrm/case/a/', ['case_type_category' => $caseCategoryId], FALSE,
           "/case?case_type_category={$caseCategoryId}"),
       ],
     ];

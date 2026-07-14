@@ -51,7 +51,7 @@ class CRM_Civicase_Hook_PreProcess_AddCaseAdminSettings {
     $settingKeys = array_keys($civicaseSettings);
 
     foreach ($settingKeys as $settingKey) {
-      $settings[$settingKey] = CRM_Core_BAO_Setting::SYSTEM_PREFERENCES_NAME;
+      $settings[$settingKey] = $civicaseSettings[$settingKey];
     }
     $settings = $this->changeOrderForSingleCaseRoleSetting($settings);
   }
