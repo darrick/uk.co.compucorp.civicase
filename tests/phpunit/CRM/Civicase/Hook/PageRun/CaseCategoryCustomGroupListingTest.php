@@ -29,7 +29,7 @@ class CRM_Civicase_Hook_PageRun_CaseCategoryCustomGroupListingTest extends BaseH
     // Modify rows to suite expected result.
     $rows[0]['extends_display'] = CaseCategoryForCustomGroupSupport::CASE_CATEGORY_LABEL;
     $rows[0]['extends_entity_column_value'] = 'Any';
-    $this->assertEquals($rows, $page->get_template_vars('rows'));
+    $this->assertEquals($rows, $page->getTemplateVars('rows'));
   }
 
   /**
