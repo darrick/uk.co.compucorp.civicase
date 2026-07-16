@@ -20,7 +20,8 @@ class CRM_Civicase_Service_CaseRoleCreationPostProcessTest extends BaseHeadlessT
   /**
    * Setup data before tests run.
    */
-  public function setUp() {
+  public function setUp(): void {
+    parent::setUp();
     $contact = ContactFabricator::fabricate();
     $this->registerCurrentLoggedInContactInSession($contact['id']);
   }

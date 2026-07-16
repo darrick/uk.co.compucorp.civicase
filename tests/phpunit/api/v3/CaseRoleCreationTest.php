@@ -19,7 +19,8 @@ class api_v3_CaseRoleCreationTest extends BaseHeadlessTest {
   /**
    * Setup data before tests run.
    */
-  public function setUp() {
+  public function setUp(): void {
+    parent::setUp();
     $contact = ContactFabricator::fabricate();
     $this->registerCurrentLoggedInContactInSession($contact['id']);
   }

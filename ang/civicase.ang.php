@@ -13,6 +13,58 @@ use CRM_Civicase_Helper_CaseUrl as CaseUrlHelper;
 use CRM_Civicase_Helper_GlobRecursive as GlobRecursive;
 use CRM_Civicase_Service_CaseCategoryPermission as CaseCategoryPermission;
 
+
+
+/**
+ * Loads Resources.
+ */
+if (!function_exists('load_resources')) {
+  function load_resources() {
+/*
+Civi::resources()
+    ->addScriptFile('org.civicrm.shoreditch', 'base/js/affix.js', 1000, 'html-header')
+    ->addSetting([
+      'config' => [
+        'enableComponents' => CRM_Core_Config::singleton()->enableComponents,
+        'user_contact_id' => (int) CRM_Core_Session::getLoggedInContactID(),
+      ],
+    ]);
+*/
+  }
+}
+
+/**
+ * Add shoreditch custom css if not already present.
+ */
+if (!function_exists('adds_shoreditch_css')) {
+  function adds_shoreditch_css() {
+    if (!civicrm_api3('Setting', 'getvalue', ['name' => "customCSSURL"])) {
+//    Civi::resources()
+//      ->addStyleFile('org.civicrm.shoreditch', 'css/custom-civicrm.css', 99, 'html-header');
+    }
+  }
+}
+
+/**
+ * Get a list of JS files.
+ */
+if (!function_exists('get_js_files')) {
+  function get_js_files() {
+    return array_merge(
+      [
+        // At the moment, it's safe to include this multiple times.
+        // deduped by resource manager.
+        Civi::service('asset_builder')->getUrl('visual-bundle.js'),
+        'ang/civicase.js',
+      ],
+      GlobRecursive::getRelativeToExtension(
+      'uk.co.compucorp.civicase',
+      'ang/civicase/*.js'
+    )
+  );
+  }
+}
+
 load_resources();
 [$caseCategoryId, $caseCategoryName] = CaseUrlHelper::getCategoryParamsFromUrl();
 
@@ -49,48 +101,6 @@ $requires = [
   'civicase-base',
 ];
 $requires = CRM_Civicase_Hook_addDependentAngularModules::invoke($requires);
-
-/**
- * Loads Resources.
- */
-function load_resources() {
-  Civi::resources()
-    ->addScriptFile('org.civicrm.shoreditch', 'base/js/affix.js', 1000, 'html-header')
-    ->addSetting([
-      'config' => [
-        'enableComponents' => CRM_Core_Config::singleton()->enableComponents,
-        'user_contact_id' => (int) CRM_Core_Session::getLoggedInContactID(),
-      ],
-    ]);
-}
-
-/**
- * Add shoreditch custom css if not already present.
- */
-function adds_shoreditch_css() {
-  if (!civicrm_api3('Setting', 'getvalue', ['name' => "customCSSURL"])) {
-    Civi::resources()
-      ->addStyleFile('org.civicrm.shoreditch', 'css/custom-civicrm.css', 99, 'html-header');
-  }
-}
-
-/**
- * Get a list of JS files.
- */
-function get_js_files() {
-  return array_merge(
-    [
-      // At the moment, it's safe to include this multiple times.
-      // deduped by resource manager.
-      Civi::service('asset_builder')->getUrl('visual-bundle.js'),
-      'ang/civicase.js',
-    ],
-    GlobRecursive::getRelativeToExtension(
-      'uk.co.compucorp.civicase',
-      'ang/civicase/*.js'
-    )
-  );
-}
 
 return [
   'js' => get_js_files(),

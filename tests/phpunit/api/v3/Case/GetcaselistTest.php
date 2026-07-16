@@ -26,7 +26,8 @@ class api_v3_Case_GetcaselistTest extends BaseHeadlessTest {
   /**
    * Setup data before tests run.
    */
-  public function setUp() {
+  public function setUp(): void {
+    parent::setUp();
     $contact = ContactFabricator::fabricate();
     $this->registerCurrentLoggedInContactInSession($contact['id']);
     $this->creator = $contact['id'];

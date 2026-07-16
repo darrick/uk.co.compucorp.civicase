@@ -16,6 +16,7 @@ use CRM_Civicase_Helper_GlobRecursive as GlobRecursive;
  * @return array
  *   list of js files
  */
+if (!function_exists('getFeaturesJsFiles')) {
 function getFeaturesJsFiles() {
   return array_merge(
     [
@@ -26,6 +27,7 @@ function getFeaturesJsFiles() {
       'ang/civicase-features/*.js'
     )
   );
+}
 }
 
 $requires = [

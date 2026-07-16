@@ -16,6 +16,7 @@ use CRM_Civicase_Helper_GlobRecursive as GlobRecursive;
  * @return array
  *   list of js files
  */
+if (!function_exists('get_workflow_js_files')) {
 function get_workflow_js_files() {
   return array_merge(
     [
@@ -26,6 +27,7 @@ function get_workflow_js_files() {
       'ang/workflow/*.js'
     )
   );
+}
 }
 
 $requires = [

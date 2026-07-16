@@ -18,7 +18,8 @@ class CRM_Civicase_Form_CaseSalesOrderInvoiceTest extends BaseHeadlessTest {
   /**
    * Setup data before tests run.
    */
-  public function setUp() {
+  public function setUp(): void {
+    parent::setUp();
     CRM_Core_Invoke::rebuildMenuAndCaches(TRUE);
     $contact = ContactFabricator::fabricate();
     $this->registerCurrentLoggedInContactInSession($contact['id']);
