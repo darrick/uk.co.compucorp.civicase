@@ -53,8 +53,7 @@ class CRM_Civicase_Service_CaseCategoryCustomDataType {
     if ($result['count'] == 0) {
       return;
     }
-
-    CRM_Core_BAO_OptionValue::del($result['values'][0]['id']);
+    CRM_Core_BAO_OptionValue::deleteRecord(['id' => $result['values'][0]['id']]);
   }
 
   /**
