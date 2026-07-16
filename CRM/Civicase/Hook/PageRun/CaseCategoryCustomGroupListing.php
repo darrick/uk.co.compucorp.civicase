@@ -35,7 +35,7 @@ class CRM_Civicase_Hook_PageRun_CaseCategoryCustomGroupListing {
    *   Page Object.
    */
   private function processDisplay(&$page) {
-    $rows = $page->get_template_vars('rows');
+    $rows = $page->getTemplateVars('rows');
     foreach ($rows as &$row) {
       if ($row['extends'] == 'Case' && !empty($row['extends_entity_column_id'])) {
         $displayFormatter = $this->getInstanceDisplayFormatter($row['extends_entity_column_id']);

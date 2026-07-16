@@ -68,7 +68,7 @@ class CRM_Civicase_Hook_BuildForm_TokenTree {
    *   Form object class.
    */
   private function attachNewTokenTreeToForm(CRM_Core_Form &$form) {
-    $tokens = $form->get_template_vars('tokens');
+    $tokens = $form->getTemplateVars('tokens');
     $newTokenTree = [];
     foreach ($tokens as $key => $tokenList) {
       if (empty($tokenList['text'])) {

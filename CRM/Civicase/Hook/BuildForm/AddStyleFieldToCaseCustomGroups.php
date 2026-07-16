@@ -28,7 +28,7 @@ class CRM_Civicase_Hook_BuildForm_AddStyleFieldToCaseCustomGroups {
       return;
     }
 
-    $multipleTypes = $form->get_template_vars('allowMultiple');
+    $multipleTypes = $form->getTemplateVars('allowMultiple');
     $caseEntityNames = CaseType::buildOptions('case_type_category', 'validate');
 
     // This is the generic entity for all cases.
