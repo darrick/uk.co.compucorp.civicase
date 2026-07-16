@@ -1,20 +1,30 @@
 <?php
 
-use Civi\Test;
+use PHPUnit\Framework\MockObject\MockBuilder;
+
+use Civi\Test\CiviEnvBuilder;
 use Civi\Test\HeadlessInterface;
 use Civi\Test\TransactionalInterface;
-use PHPUnit\Framework\TestCase;
+use Civi\Test\HookInterface;
 
 /**
  * Base test class.
  */
-abstract class BaseHeadlessTest extends TestCase implements HeadlessInterface, TransactionalInterface {
+abstract class BaseHeadlessTest extends \PHPUnit\Framework\TestCase implements HeadlessInterface, TransactionalInterface {
 
   /**
-   * {@inheritDoc}
+   * Setup used when HeadlessInterface is implemented.
+   *
+   * Civi\Test has many helpers, like install(), uninstall(), sql(), and sqlFile().
+   *
+   * @link https://github.com/civicrm/org.civicrm.testapalooza/blob/master/civi-test.md
+   *
+   * @return \Civi\Test\CiviEnvBuilder
+   *
+   * @throws \CRM_Extension_Exception_ParseException
    */
-  public function setUpHeadless() {
-    return Test::headless()
+  public function setUpHeadless(): CiviEnvBuilder {
+    return \Civi\Test::headless()
       ->installMe(__DIR__)
       ->apply();
   }
@@ -22,38 +32,8 @@ abstract class BaseHeadlessTest extends TestCase implements HeadlessInterface, T
   /**
    * {@inheritDoc}
    */
-  public function getMockBuilder($className) {
-    $mockBuilder = (new class($this, $className) extends PHPUnit_Framework_MockObject_MockBuilder {
-
-      /**
-       * {@inheritDoc}
-       */
-      public function getMock() {
-        static::setSupressedErrorHandler();
-
-        try {
-          return parent::getMock();
-        } finally {
-          restore_error_handler();
-        }
-      }
-
-      /**
-       * Supress depreciation warnings.
-       */
-      public static function setSupressedErrorHandler() {
-        $previousHandler = set_error_handler(function ($code, $description, $file = NULL, $line = NULL, $context = NULL) use (&$previousHandler) {
-          if ($code & E_DEPRECATED) {
-              return TRUE;
-          }
-
-            return $previousHandler($code, $description, $file, $line, $context);
-        });
-      }
-
-    });
-
-    return $mockBuilder;
+  public function getMockBuilder($className): MockBuilder {
+    return parent::getMockBuilder($className);
   }
 
 }
