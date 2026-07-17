@@ -324,17 +324,22 @@ class CRM_Civicase_Hook_SendBulkEmailTest extends BaseHeadlessTest {
 
     $fields = $files = $errors = [];
 
-    $this->form->_contactIds = [];
-    $this->form->_toContactEmails = [];
-    $this->form->_contactDetails = [];
+    if ($this->form instanceof CRM_Case_Form_Task_Email) {
+
+      $this->form->_contactIds = [];
+      $this->form->contactEmails = [];
+      $this->form->_contactDetails = [];
+    }
     foreach ($contacts as $contact) {
-      $this->form->_contactIds[] = $contact['id'];
-      $this->form->_toContactEmails[] = $contact['email'];
-      $this->form->_contactDetails[$contact['id']] = [
-        'email' => $contact['email'],
-        'contact_id' => $contact['id'],
-        'preferred_mail_format' => 'HTML',
-      ];
+      if ($this->form instanceof CRM_Case_Form_Task_Email) {
+        $this->form->_contactIds[] = $contact['id'];
+        $this->form->contactEmails[] = $contact['email'];
+        $this->form->_contactDetails[$contact['id']] = [
+          'email' => $contact['email'],
+          'contact_id' => $contact['id'],
+          'preferred_mail_format' => 'HTML',
+        ];
+      }
       $formValues['to'][$contact['id']] = $contact['id'] . '::' . $contact['email'];
     }
     $formValues['to'] = implode(',', $formValues['to']);
