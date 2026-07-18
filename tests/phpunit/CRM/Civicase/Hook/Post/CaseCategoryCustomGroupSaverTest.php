@@ -77,6 +77,7 @@ class CRM_Civicase_Hook_Post_CaseCategoryCustomGroupSaverTest extends BaseHeadle
     $customGroup = new CustomGroup();
     $customGroup->extends = 'Cases';
     $customGroup->title = 'Group' . uniqid();
+    $customGroup->name = $customGroup->title;
 
     return $customGroup;
   }

@@ -106,6 +106,7 @@ class CRM_Civicase_Service_CaseManagementCaseTypePostProcessorTest extends BaseH
   private function createCustomGroup($entityColumnValues) {
     $cusGroup = new CRM_Core_BAO_CustomGroup();
     $cusGroup->title = 'Group' . uniqid();
+    $cusGroup->name = $cusGroup->title;
     $cusGroup->extends = 'Case';
     $entityColValue = is_null($entityColumnValues) ? 'null' : CRM_Core_DAO::VALUE_SEPARATOR . implode(CRM_Core_DAO::VALUE_SEPARATOR, $entityColumnValues) . CRM_Core_DAO::VALUE_SEPARATOR;
     $cusGroup->extends_entity_column_value = $entityColValue;

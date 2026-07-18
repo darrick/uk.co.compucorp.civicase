@@ -4,6 +4,7 @@ use CRM_Civicase_Service_ManageWorkflowMenu as ManageWorkflowMenu;
 use CRM_Civicase_Test_Fabricator_CaseCategory as CaseCategoryFabricator;
 use CRM_Civicase_Test_Fabricator_CaseCategoryInstance as CaseCategoryInstanceFabricator;
 use CRM_Civicase_Test_Fabricator_CaseCategoryInstanceType as CaseCategoryInstanceTypeFabricator;
+use CRM_Civicase_Service_CaseCategoryCustomFieldsSetting as CaseCategoryCustomFieldsSetting;
 
 /**
  * Test class for the CRM_Civicase_Service_ManageWorkflowMenu.
@@ -37,7 +38,11 @@ class CRM_Civicase_Service_ManageWorkflowMenuTest extends BaseHeadlessTest {
    * @dataProvider getDataForMenu
    */
   public function testCreateWorkflowMenuItems(bool $showCategoryNameOnMenuLabel) {
+    $caseCategoryCustomFields = new CaseCategoryCustomFieldsSetting();
     $caseCategory = CaseCategoryFabricator::fabricate();
+    $caseCategoryCustomFields->save($caseCategory['value'], [
+      'singular_label' => $caseCategory['label'],
+    ]);
     $caseCategoryInstanceType = CaseCategoryInstanceTypeFabricator::fabricate();
     CaseCategoryInstanceFabricator::fabricate([
       'category_id' => $caseCategory['value'],
@@ -73,6 +78,7 @@ class CRM_Civicase_Service_ManageWorkflowMenuTest extends BaseHeadlessTest {
       [
         'parent_id' => $menuCreated['id'],
         'label' => 'First subitem',
+        'singular_label' => 'First subitem',
       ]
     );
 

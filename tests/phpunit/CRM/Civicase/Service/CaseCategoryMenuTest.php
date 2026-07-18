@@ -4,13 +4,15 @@ use CRM_Civicase_Service_CaseCategoryPermission as CaseCategoryPermission;
 use CRM_Civicase_Service_CaseCategoryMenu as CaseCategoryMenuService;
 use CRM_Civicase_Test_Fabricator_CaseCategory as CaseCategoryFabricator;
 use CRM_Civicase_Helper_Category as CategoryHelper;
+use CRM_Civicase_Service_CaseCategoryCustomFieldsSetting as CaseCategoryCustomFieldsSetting;
 
 /**
  * Test class for the CRM_Civicase_Service_CaseCategoryMenu.
  *
  * @group headless
  */
-class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
+class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest
+{
 
   /**
    * Instance of CaseCategoryMenu service.
@@ -22,7 +24,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  protected function setUp(): void
+  {
     parent::setUp();
 
     $this->caseCategoryMenu = new CaseCategoryMenuService();
@@ -31,7 +34,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Test createItems method adds the expected menus.
    */
-  public function testCreateNewItemsAddsExpectedMenus() {
+  public function testCreateNewItemsAddsExpectedMenus()
+  {
     $caseCategory = CaseCategoryFabricator::fabricate();
 
     $this->caseCategoryMenu->createItems([
@@ -46,7 +50,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Test calling twice createItems does not create duplicates.
    */
-  public function testCreateTwiceSameItemsDoesNotCreateDuplicates() {
+  public function testCreateTwiceSameItemsDoesNotCreateDuplicates()
+  {
     $caseCategory = CaseCategoryFabricator::fabricate();
 
     // First call.
@@ -69,7 +74,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Test createItems method assigns same weight to different menus.
    */
-  public function testCreateTwoDifferentMenusAssignsSameWeight() {
+  public function testCreateTwoDifferentMenusAssignsSameWeight()
+  {
     $caseCategoryOne = CaseCategoryFabricator::fabricate();
     $caseCategoryTwo = CaseCategoryFabricator::fabricate();
     $expectWeightForMenu = $this->getExpectedWeightForCategoryMenu();
@@ -87,13 +93,17 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
       'singular_label' => $caseCategoryTwo['label'],
     ]);
 
-    $menuOneWeight = civicrm_api3('Navigation', 'getsingle',
+    $menuOneWeight = civicrm_api3(
+      'Navigation',
+      'getsingle',
       [
         'name' => $caseCategoryOne['name'],
         'return' => ['weight'],
       ]
     )['weight'];
-    $menuTwoWeight = civicrm_api3('Navigation', 'getsingle',
+    $menuTwoWeight = civicrm_api3(
+      'Navigation',
+      'getsingle',
       [
         'name' => $caseCategoryTwo['name'],
         'return' => ['weight'],
@@ -106,7 +116,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Test deleteItems method removes menus and submenus.
    */
-  public function testDeleteItemsRemovesMenusAndSubMenus() {
+  public function testDeleteItemsRemovesMenusAndSubMenus()
+  {
     $caseCategory = CaseCategoryFabricator::fabricate();
 
     $this->caseCategoryMenu->createItems([
@@ -114,7 +125,9 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
       'label' => $caseCategory['label'],
       'singular_label' => $caseCategory['label'],
     ]);
-    $menuCreatedId = civicrm_api3('Navigation', 'getsingle',
+    $menuCreatedId = civicrm_api3(
+      'Navigation',
+      'getsingle',
       [
         'name' => $caseCategory['name'],
         'return' => ['id'],
@@ -132,7 +145,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Test updateItems method produces expected changes.
    */
-  public function testUpdateItemsProducesExpectedChanges() {
+  public function testUpdateItemsProducesExpectedChanges()
+  {
     $caseCategory = CaseCategoryFabricator::fabricate();
     $newValues = [
       'icon' => 'new icon',
@@ -162,8 +176,13 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
    * This code is not actually asserting that the menu content was modified,
    * but it is enough to check that final URLs are as expected.
    */
-  public function testMenusLinksAreCorrectlyUpdated() {
+  public function testMenusLinksAreCorrectlyUpdated()
+  {
+    $caseCategoryCustomFields = new CaseCategoryCustomFieldsSetting();
     $caseCategory = CaseCategoryFabricator::fabricate();
+    $caseCategoryCustomFields->save($caseCategory['value'], [
+        'singular_label' => $caseCategory['label'],
+    ]);
     $submenus = $this->caseCategoryMenu->getSubmenus(
       CategoryHelper::get($caseCategory['name'])
     );
@@ -202,7 +221,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Assert the menu created for the given category has expected information.
    */
-  private function assertMenuCreatedForCaseCategory(array $caseCategory) {
+  private function assertMenuCreatedForCaseCategory(array $caseCategory)
+  {
     $menuCreated = civicrm_api3('Navigation', 'getsingle', ['name' => $caseCategory['name']]);
 
     $this->assertEquals(ts($caseCategory['name']), $menuCreated['name']);
@@ -220,7 +240,8 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Returns permissions that the menu should have.
    */
-  private function getPermissionForNavigationMenu(string $caseTypeCategoryName) {
+  private function getPermissionForNavigationMenu(string $caseTypeCategoryName)
+  {
     $permissions = (new CaseCategoryPermission())->get($caseTypeCategoryName);
 
     return sprintf(
@@ -233,13 +254,13 @@ class CRM_Civicase_Service_CaseCategoryMenuTest extends BaseHeadlessTest {
   /**
    * Get the expected weight for the category menu.
    */
-  private static function getExpectedWeightForCategoryMenu() {
+  private static function getExpectedWeightForCategoryMenu()
+  {
     return CRM_Core_DAO::getFieldValue(
-        'CRM_Core_DAO_Navigation',
-        'Cases',
-        'weight',
-        'name'
-      ) + 1;
+      'CRM_Core_DAO_Navigation',
+      'Cases',
+      'weight',
+      'name'
+    ) + 1;
   }
-
 }

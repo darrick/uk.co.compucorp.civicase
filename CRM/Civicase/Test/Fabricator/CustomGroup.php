@@ -19,6 +19,7 @@ class CRM_Civicase_Test_Fabricator_CustomGroup {
     $group = civicrm_api3('CustomGroup', 'create', [
       'title' => $params['title'],
       'extends' => $params['extends'],
+      'is_multiple' => $params['is_multiple'] ?? 0,
     ]);
 
     return array_shift($group['values']);

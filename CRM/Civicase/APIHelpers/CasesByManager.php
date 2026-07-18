@@ -7,7 +7,7 @@ class CRM_Civicase_APIHelpers_CasesByManager {
    *
    * @param CRM_Utils_SQL_Select $query
    *   The SQL object reference.
-   * @param Int|Array $caseManager
+   * @param int|array $caseManager
    *   The ID of the case manager.
    */
   public static function filter($query, $caseManager) {

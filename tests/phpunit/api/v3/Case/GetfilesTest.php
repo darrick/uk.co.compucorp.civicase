@@ -31,16 +31,16 @@ require_once 'BaseTestCase.php';
 class api_v3_Case_GetfilesTest extends api_v3_Case_BaseTestCase implements HeadlessInterface, HookInterface, TransactionalInterface { // phpcs:ignore
 
   /**
-   * Holds logged in case creator id.
+   * Holds logged in case creator.
    *
-   * @var int
+   * @var array|\ArrayAccess
    */
   private $creator;
 
   /**
-   * Holds logged in case client id.
+   * Holds logged in case client.
    *
-   * @var int
+   * @var array|\ArrayAccess
    */
   private $client;
 

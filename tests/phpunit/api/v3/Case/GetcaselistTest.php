@@ -98,9 +98,11 @@ class api_v3_Case_GetcaselistTest extends BaseHeadlessTest {
     $customFieldParams = [
       'html_type' => 'Select',
       'option_group_id' => $optionGroupId,
+      'is_multiple' => 1,
+      'custom_group_id' => CRM_Civicase_Test_Fabricator_CustomGroup::fabricate(['is_multiple' => 1])['id']
     ];
+
     $customField = CustomFieldFabricator::fabricate($customFieldParams);
-    $customField = 'custom_' . $customField['id'];
 
     $caseA = CaseFabricator::fabricate(
       [
@@ -111,11 +113,13 @@ class api_v3_Case_GetcaselistTest extends BaseHeadlessTest {
       ]
     );
 
-    // Assign field with multiple options to the case.
-    civicrm_api3('CustomValue', 'create', [
-      $customField => [1, 2],
+    $params = [
       'entity_id' => $caseA['id'],
-    ]);
+      "custom_{$customField['id']}:-1" => 1,
+      "custom_{$customField['id']}:-2" => 2
+    ];
+    // Assign field with multiple options to the case.
+    civicrm_api3('CustomValue', 'create', $params);
 
     CaseFabricator::fabricate(
       [
@@ -127,7 +131,7 @@ class api_v3_Case_GetcaselistTest extends BaseHeadlessTest {
 
     // Attempt to search by one of the assigned options.
     $caseDetailsParams = [
-      $customField => 1,
+      "custom_{$customField['id']}" => 1,
     ];
 
     $result = civicrm_api3('Case', 'getdetails', $caseDetailsParams);
