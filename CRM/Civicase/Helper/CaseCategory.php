@@ -360,10 +360,6 @@ class CRM_Civicase_Helper_CaseCategory {
     CRM_Utils_System::resetBreadCrumb();
     $breadcrumb = [
       [
-        'title' => ts('Home'),
-        'url' => CRM_Utils_System::url(),
-      ],
-      [
         'title' => ts('CiviCRM'),
         'url' => CRM_Utils_System::url('civicrm', 'reset=1'),
       ],
